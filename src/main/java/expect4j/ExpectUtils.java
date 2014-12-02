@@ -193,7 +193,7 @@ public abstract class ExpectUtils {
         channel.setEnv(env);
         
         Expect4j expect = new Expect4j(channel.getInputStream(), channel.getOutputStream());
-        
+        expect.setSession(session);
         channel.connect(5 * 1000);
         
         return expect;

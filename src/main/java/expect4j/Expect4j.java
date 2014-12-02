@@ -17,6 +17,7 @@
 
 package expect4j;
 
+import com.jcraft.jsch.Session;
 import expect4j.matches.*;
 
 // TODO: replace these with specific class imports
@@ -114,6 +115,12 @@ public class Expect4j {
      * TODO
      */
     PatternMatcherInput input;
+
+    public void setSession(Session m_session) {
+        this.m_session = m_session;
+    }
+
+    private Session m_session;
 
     /**
      * Create an <code>Expect4j</code> instance based on an {@link
@@ -726,6 +733,13 @@ public class Expect4j {
      */
     public void close() {
         logger.debug("Stopping processing of the reader/writer streams by the Expect4j instance" + this);
+        try {
+            if (m_session != null) {
+                m_session.disconnect();
+            }
+        }catch(Exception e) {
+            logger.error("JSCH session disconnect failed", e);
+        }
         consumer.stop();
     }
 }
